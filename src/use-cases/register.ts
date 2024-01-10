@@ -11,8 +11,8 @@ interface RegisterUseCaseRequest {
   firstname: string;
   lastname: string;
   sex: string;
-  height: number;
-  weight: number;
+  currentHeight: number;
+  currentWeight: number;
   physicalActivityLevel: string;
   weightGoal: number;
   birthdate: Date;
@@ -35,8 +35,8 @@ export class RegisterUseCase {
     firstname,
     lastname,
     sex,
-    height,
-    weight,
+    currentHeight,
+    currentWeight,
     physicalActivityLevel,
     weightGoal,
     birthdate,
@@ -55,8 +55,8 @@ export class RegisterUseCase {
       firstname,
       lastname,
       sex,
-      height,
-      weight,
+      currentHeight,
+      currentWeight,
       physicalActivityLevel,
       weightGoal,
       birthdate,
@@ -65,12 +65,12 @@ export class RegisterUseCase {
     });
 
     await this.weightsRepository.create({
-      value: weight,
+      value: currentWeight,
       userId: user.id,
     });
 
     await this.heightsRepository.create({
-      value: height,
+      value: currentHeight,
       userId: user.id,
     });
 

@@ -7,9 +7,9 @@ model User {
   firstname             String
   lastname              String
   sex                   String
-  height                Int      @db.SmallInt()
+  currentHeight         Int      @map("current_height") @db.SmallInt()
   heights               Height[]
-  weight                Int      @db.SmallInt()
+  currentWeight         Int      @map("current_weight") @db.SmallInt()
   weights               Weight[]
   physicalActivityLevel String   @map("physical_activity_level")
   weightGoal            Int      @map("weight_goal") @db.SmallInt()

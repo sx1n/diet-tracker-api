@@ -3,19 +3,19 @@ generator client {
 }
 
 model User {
-  id               String   @id @default(uuid())
-  firstname        String
-  lastname         String
-  gender           String
-  height           Int      @db.SmallInt()
-  heights          Height[]
-  weight           Int      @db.SmallInt()
-  weights          Weight[]
-  physicalActivity String   @map("physical_activity")
-  weightGoal       Int      @map("weight_goal") @db.SmallInt()
-  birthdate        DateTime @db.Timestamp()
-  email            String   @unique
-  passwordHash     String   @map("password_hash")
+  id                    String   @id @default(uuid())
+  firstname             String
+  lastname              String
+  sex                   String
+  height                Int      @db.SmallInt()
+  heights               Height[]
+  weight                Int      @db.SmallInt()
+  weights               Weight[]
+  physicalActivityLevel String   @map("physical_activity_level")
+  weightGoal            Int      @map("weight_goal") @db.SmallInt()
+  birthdate             DateTime @db.Timestamp()
+  email                 String   @unique
+  passwordHash          String   @map("password_hash")
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -27,7 +27,7 @@ model Height {
   value Int      @db.SmallInt()
   date  DateTime @default(now())
 
-  User   User  @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id])
   userId String @map("user_id")
 
   @@map("heights")
@@ -38,7 +38,7 @@ model Weight {
   value Float    @db.DoublePrecision
   date  DateTime @default(now())
 
-  User   User  @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id])
   userId String @map("user_id")
 
   @@map("weights")

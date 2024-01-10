@@ -10,10 +10,10 @@ import { UserAlreadyExistsError } from "./errors/user-already-exists-error";
 interface RegisterUseCaseRequest {
   firstname: string;
   lastname: string;
-  gender: string;
+  sex: string;
   height: number;
   weight: number;
-  physicalActivity: string;
+  physicalActivityLevel: string;
   weightGoal: number;
   birthdate: Date;
   email: string;
@@ -34,10 +34,10 @@ export class RegisterUseCase {
   async execute({
     firstname,
     lastname,
-    gender,
+    sex,
     height,
     weight,
-    physicalActivity,
+    physicalActivityLevel,
     weightGoal,
     birthdate,
     email,
@@ -54,10 +54,10 @@ export class RegisterUseCase {
     const user = await this.usersRepository.create({
       firstname,
       lastname,
-      gender,
+      sex,
       height,
       weight,
-      physicalActivity,
+      physicalActivityLevel,
       weightGoal,
       birthdate,
       email,

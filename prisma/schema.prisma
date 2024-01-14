@@ -13,7 +13,7 @@ model User {
   weights               Weight[]
   physicalActivityLevel String   @map("physical_activity_level")
   weightGoal            Int      @map("weight_goal") @db.SmallInt()
-  birthdate             DateTime @db.Timestamp()
+  birthdate             DateTime @db.Date()
   email                 String   @unique
   passwordHash          String   @map("password_hash")
 

@@ -1,5 +1,5 @@
 import { FoodsRepository } from "@/repositories/foods-repository";
-import { NutritionalInformationsRepository } from "@/repositories/nutritional-information-repository";
+import { NutritionalInformationsRepository } from "@/repositories/nutritional-informations-repository";
 
 import { InvalidUnitMeasureError } from "./errors/invalid-unit-measure-error";
 
@@ -43,8 +43,8 @@ interface CreateFoodUseCaseRequest {
 
 export class CreateFoodUseCase {
   constructor(
-    private foodRepository: FoodsRepository,
-    private nutritionalInformationRepository: NutritionalInformationsRepository,
+    private foodsRepository: FoodsRepository,
+    private nutritionalInformationsRepository: NutritionalInformationsRepository,
   ) {}
 
   async execute({
@@ -70,7 +70,7 @@ export class CreateFoodUseCase {
       throw new InvalidUnitMeasureError();
     }
 
-    const food = await this.foodRepository.create({
+    const food = await this.foodsRepository.create({
       name,
       brand,
       description,
@@ -80,7 +80,7 @@ export class CreateFoodUseCase {
     });
 
     if (nutritionalInformation) {
-      await this.nutritionalInformationRepository.create({
+      await this.nutritionalInformationsRepository.create({
         foodId: food.id,
         ...nutritionalInformation,
       });

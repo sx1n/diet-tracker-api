@@ -2,7 +2,7 @@ import { randomUUID } from "crypto";
 
 import { NutritionalInformation, Prisma } from "@prisma/client";
 
-import { NutritionalInformationsRepository } from "../nutritional-information-repository";
+import { NutritionalInformationsRepository } from "../nutritional-informations-repository";
 
 export class InMemoryNutritionalInformationsRepository
   implements NutritionalInformationsRepository

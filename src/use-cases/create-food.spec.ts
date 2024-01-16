@@ -1,23 +1,23 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
 import { InMemoryFoodsRepository } from "@/repositories/in-memory/in-memory-foods-repository";
-import { InMemoryNutritionalInformationsRepository } from "@/repositories/in-memory/in-memory-nutritional-information-repository";
+import { InMemoryNutritionalInformationsRepository } from "@/repositories/in-memory/in-memory-nutritional-informations-repository";
 
 import { CreateFoodUseCase } from "./create-food";
 import { InvalidUnitMeasureError } from "./errors/invalid-unit-measure-error";
 
-let foodRepository: InMemoryFoodsRepository;
-let nutritionalInformationRepository: InMemoryNutritionalInformationsRepository;
+let foodsRepository: InMemoryFoodsRepository;
+let nutritionalInformationsRepository: InMemoryNutritionalInformationsRepository;
 let sut: CreateFoodUseCase;
 
 describe("Create Food Use Case", () => {
   beforeEach(() => {
-    foodRepository = new InMemoryFoodsRepository();
-    nutritionalInformationRepository =
+    foodsRepository = new InMemoryFoodsRepository();
+    nutritionalInformationsRepository =
       new InMemoryNutritionalInformationsRepository();
     sut = new CreateFoodUseCase(
-      foodRepository,
-      nutritionalInformationRepository,
+      foodsRepository,
+      nutritionalInformationsRepository,
     );
   });
 

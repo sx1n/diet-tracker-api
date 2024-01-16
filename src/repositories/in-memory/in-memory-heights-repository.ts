@@ -7,7 +7,7 @@ import { HeightsRepository } from "../heights-repository";
 export class InMemoryHeightsRepository implements HeightsRepository {
   public items: Height[] = [];
 
-  async create(data: Prisma.WeightUncheckedCreateInput) {
+  async create(data: Prisma.HeightUncheckedCreateInput) {
     const height: Height = {
       id: randomUUID(),
       value: data.value,

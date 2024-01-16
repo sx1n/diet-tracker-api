@@ -2,20 +2,28 @@ generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 model User {
   id                    String   @id @default(uuid())
   firstname             String
   lastname              String
   sex                   String
   currentHeight         Int      @map("current_height") @db.SmallInt()
-  heights               Height[]
   currentWeight         Int      @map("current_weight") @db.SmallInt()
-  weights               Weight[]
   physicalActivityLevel String   @map("physical_activity_level")
   weightGoal            Int      @map("weight_goal") @db.SmallInt()
   birthdate             DateTime @db.Date()
   email                 String   @unique
   passwordHash          String   @map("password_hash")
+  heights               Height[]
+  weights               Weight[]
+  foods                 Food[]
+  meals                 Meal[]
+  diets                 Diet[]
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -27,7 +35,7 @@ model Height {
   value Int      @db.SmallInt()
   date  DateTime @default(now())
 
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @map("user_id")
 
   @@map("heights")
@@ -38,13 +46,122 @@ model Weight {
   value Float    @db.DoublePrecision
   date  DateTime @default(now())
 
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @map("user_id")
 
   @@map("weights")
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+model Food {
+  id                       String   @id @default(uuid())
+  name                     String
+  brand                    String?
+  description              String?
+  barcode                  String?
+  portionOfFood            Float?   @map("portion_of_food") @db.DoublePrecision
+  portionOfFoodUnity       String?  @map("portion_of_food_unity")
+  homemadeMeasurement      Float?   @map("homemade_measurement") @db.DoublePrecision
+  homemadeMeasurementUnity String?  @map("homemade_measurement_unity")
+  isFavorite               Boolean  @default(false) @map("is_favorite")
+  createdAt                DateTime @default(now()) @map("created_at")
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+
+  nutritionalInformation NutritionalInformation?
+
+  meals MealFood[]
+  diets DietFood[]
+
+  @@map("foods")
+}
+
+model NutritionalInformation {
+  id                 String @id @default(uuid())
+  calories           Float? @db.DoublePrecision
+  carbohydrates      Float? @db.DoublePrecision
+  protein            Float? @db.DoublePrecision
+  fat                Float? @db.DoublePrecision
+  monounsaturatedFat Float? @map("monounsaturated_fat") @db.DoublePrecision
+  saturatedFat       Float? @map("saturated_fat") @db.DoublePrecision
+  polyunsaturatedFat Float? @map("polyunsaturated_fat") @db.DoublePrecision
+  transFat           Float? @map("trans_fat") @db.DoublePrecision
+  cholesterol        Float? @db.DoublePrecision
+  sodium             Float? @db.DoublePrecision
+  potassium          Float? @db.DoublePrecision
+  fiber              Float? @db.DoublePrecision
+  sugar              Float? @db.DoublePrecision
+  calcium            Float? @db.DoublePrecision
+  iron               Float? @db.DoublePrecision
+  vitaminA           Float? @map("vitamin_a") @db.DoublePrecision
+  vitaminC           Float? @map("vitamin_c") @db.DoublePrecision
+
+  food   Food   @relation(fields: [foodId], references: [id], onDelete: Cascade)
+  foodId String @unique @map("food_id")
+
+  @@map("nutritional_information")
+}
+
+model Meal {
+  id          String  @id @default(uuid())
+  name        String
+  type        String
+  description String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+
+  foods MealFood[]
+  diets DietMeal[]
+
+  @@map("meals")
+}
+
+model MealFood {
+  meal   Meal   @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  food   Food   @relation(fields: [foodId], references: [id], onDelete: Cascade)
+  mealId String @map("meal_id")
+  foodId String @map("food_id")
+
+  @@id([mealId, foodId])
+  @@map("meals_foods")
+}
+
+model Diet {
+  id             String    @id @default(uuid())
+  date           DateTime  @default(now())
+  mealType       String
+  mealTime       DateTime?
+  calorieGoal    Float?
+  actualCalories Float?
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+
+  foods DietFood[]
+  meals DietMeal[]
+
+  @@map("diets")
+}
+
+model DietFood {
+  diet   Diet   @relation(fields: [dietId], references: [id], onDelete: Cascade)
+  dietId String @map("diet_id")
+  food   Food   @relation(fields: [foodId], references: [id], onDelete: Cascade)
+  foodId String @map("food_id")
+
+  @@id([dietId, foodId])
+  @@map("diets_foods")
+}
+
+model DietMeal {
+  diet   Diet   @relation(fields: [dietId], references: [id], onDelete: Cascade)
+  dietId String @map("diet_id")
+  meal   Meal   @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  mealId String @map("meal_id")
+
+  @@id([dietId, mealId])
+  @@map("diets_meals")
 }
